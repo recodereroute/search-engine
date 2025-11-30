@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: search-ingress
+  annotations:
+    # k3d 기본 내장된 Traefik을 쓰겠다는 표시
+    kubernates.io/ingress.class: "traefik"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: search-api-svc # 우리가 만든 서비스 이름
+                port:
+                  number: 80 # 서비스의 포트 번호

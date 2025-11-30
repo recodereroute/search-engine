@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: search-db
+  template:
+    metadata:
+      labels:
+        app: search-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: "search_engine"
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: search-config
+                  key: DB_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: search-secret
+                  key: DB_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: search-db-svc # 앱이 이 이름으로 DB를 찾습니다.
+spec:
+  selector:
+    app: search-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: ClusterIP # 내부에서만 접속 가능 (보안)

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-api
+spec:
+  replicas: 2 # ★스케일 아웃! 서버를 2대 띄웁니다.
+  selector:
+    matchLabels:
+      app: search-api
+  template:
+    metadata:
+      labels:
+        app: search-api
+    spec:
+      containers:
+        - name: sptring-boot
+          image: search-engine:v4
+          imagePullPolicy: IfNotPresent # 로컬(Import한) 이미지를 우선 사용
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: search-config
+                  key: DB_URL
+            - name: spring.datasource.username
+              valueFrom:
+                configMapKeyRef:
+                  name: search-config
+                  key: DB_USER
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: search-secret
+                  key: DB_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: search-api-svc
+spec:
+  selector:
+    app: search-api
+  ports:
+    - protocol: TCP
+      port: 80 #외부(로드밸런서)에서는 80으로 들어오면
+      targetPort: 8080 # 컨테이너의 8080으로 보냄
+  type: LoadBalancer # 외부 접속 허용!

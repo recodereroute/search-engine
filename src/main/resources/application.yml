@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    # localhost가 아니라 'search-db'라는 이름을 씁니다 (중요!)
+    url: jdbc:postgresql://search-db:5432/search_engine
+    username: search_user
+    password: search_password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update # 개발용: 테이블 없으면 자동 생성
+    show-sql: true

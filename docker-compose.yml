@@ -1,0 +1,24 @@
+services:
+  # 1번 선수: DB(postgresql)
+  search-db:
+    image: postgres:15-alpine
+    container_name: search-db
+    environment:
+      POSTGRES_DB: search_engine
+      POSTGRES_USER: search_user
+      POSTGRES_PASSWORD: search_password
+    ports:
+      - "5433:5432" #내 PC에서도 접속 가능하게 열어둠
+    volumes:
+      - ./db-data:/var/lib/postgresql/data #DB 꺼도 데이터 안날아가게 저장
+  # 2번 선수: 검색엔진 API(Spring Boot)
+  search-api:
+    build: . #현재 폴더의 Dockerfile로 빌드해라
+    container_name: search-api
+    ports:
+      - "8080:8080"
+    environment:
+      # Spring 설정 덮어쓰기(확실하게 하기위해)
+      SPRING_DATASOURCE_URL: jdbc:postgresql://search-db:5432/search_engine
+    depends_on:
+      - search-db #DB가 먼저 켜져야 나도 켜진다.

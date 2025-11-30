@@ -1,0 +1,48 @@
+# 1. 컴파일된 파일 및 로그 (쓰레기)
+HELP.md
+.gradle
+build/
+*.log
+
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+# 3. OS 생성 파일
+.DS_Store
+Thumbs.db
+
+# 4. ★★★ 가장 중요: DB 데이터 및 로컬 볼륨 ★★★
+db-data/
+db-data-new/

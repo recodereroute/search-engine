@@ -29,9 +29,9 @@ jobs:
       with:
         context: .
         push: true # 빌드 후 DockerHub에 업로드까지 해라
+        # 태그 전략: 두 가지를 동시에 만듭니다.
+        # 1. latest: 누구나 쉽게 최신 버전을 받을 수 있게 (덮어쓰기용)
+        # 2. commit sha: 쿠버네티스가 캐시 없이 확실하게 배포할 수 있게 (고유 식별용)
         tags: |
-          # 태그 전략: 두 가지를 동시에 만듭니다.
-          # 1. latest: 누구나 쉽게 최신 버전을 받을 수 있게 (덮어쓰기용)
           ${{ secrets.DOCKER_USERNAME }}/search-engine:latest
-          # 2. commit sha: 쿠버네티스가 캐시 없이 확실하게 배포할 수 있게 (고유 식별용)
           ${{ secrets.DOCKER_USERNAME }}/search-engine:sha-${{ github.sha }}

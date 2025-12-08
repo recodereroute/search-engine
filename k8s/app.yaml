@@ -46,4 +46,4 @@ spec:
     - protocol: TCP
       port: 80 #외부(로드밸런서)에서는 80으로 들어오면
       targetPort: 8080 # 컨테이너의 8080으로 보냄
-  type: LoadBalancer # 외부 접속 허용!
+  type: ClusterIP # 외부 접속 허용!

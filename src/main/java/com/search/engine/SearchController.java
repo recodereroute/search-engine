@@ -9,6 +9,7 @@ public class SearchController {
 
     @GetMapping("/api/health")
     public String healthCheck(){
+	    // add for  CI/CD test
         return "Search Engine is Running!";
     }
 

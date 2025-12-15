@@ -15,7 +15,8 @@ spec:
       containers:
         - name: sptring-boot
           image: search-engine:v4
-          imagePullPolicy: IfNotPresent # 로컬(Import한) 이미지를 우선 사용
+          imagePullPolicy: Always
+            #imagePullPolicy: IfNotPresent # 로컬(Import한) 이미지를 우선 사용
           ports:
             - containerPort: 8080
           env:

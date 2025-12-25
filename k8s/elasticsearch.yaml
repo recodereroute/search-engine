@@ -1,0 +1,52 @@
+# [영역 1] 쿠버네티스(K8s) 문법 영역
+apiVersion: apps/v1
+kind: StatefulSet   # DB처럼 상태가 있는 앱은 Deployment보다 StatefulSet을 권장합니다
+metadata:
+  name: elasticsearch
+  namespace: default
+spec:
+  serviceName: elasticsearch
+  replicas: 1       # 학습용이라 1개만 띄웁니다 (싱글 노드)
+  selector:         # K8s 기능: "어떤 라벨 붙은 놈을 관리할까?"
+    matchLabels:
+      app: elasticsearch
+  template:         # K8s 기능: "자, 이제 붕어빵(파드) 찍어낼 틀을 정의할게"
+    metadata:
+      labels:       # K8s 기능: "이 붕어빵 이름표"
+        app: elasticsearch
+    spec:
+      containers:
+
+      # ---------------------------------------------------------
+      # [영역 2] 도커 & Elasticsearch 설정 영역 (여기서부터 알맹이!)
+      # ---------------------------------------------------------
+      - name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.17.10 # 안정적인 7버전 사용
+        resources:
+          limits:
+            memory: 1Gi  # 리소스 제한 (노트북/PC 환경 고려)
+          requests:
+            memory: 512Mi
+        env:          # [Docker/ES] 컨테이너 안에 넣어줄 설정값
+        - name: discovery.type      # [ES 설정] "나 혼자 뜰 거야" (ES 문서 봐야 함)
+          value: single-node  # 중요: 클러스터링 없이 혼자 뜬다는 설정
+        - name: ES_JAVA_OPTS # JVM 힙 메모리 설정
+          value: "-Xms512m -Xmx512m"
+        ports:
+        - containerPort: 9200 # HTTP 통신 포트
+          name: http
+        - containerPort: 9300 # 노드 간 통신 포트
+          name: transport
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  namespace: default
+spec:
+  selector:
+    app: elasticsearch
+  ports:
+  - port: 9200
+    targetPort: 9200

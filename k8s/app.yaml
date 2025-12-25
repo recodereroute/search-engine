@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: sptring-boot
-          image: search-engine:v4
+          image: rmsgh0726/search-engine:sha-0e15a0491abccc491fe5b18f6f63b4bb829f773a
           imagePullPolicy: Always
             #imagePullPolicy: IfNotPresent # 로컬(Import한) 이미지를 우선 사용
           ports:

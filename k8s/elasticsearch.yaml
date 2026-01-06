@@ -21,7 +21,8 @@ spec:
       # [영역 2] 도커 & Elasticsearch 설정 영역 (여기서부터 알맹이!)
       # ---------------------------------------------------------
       - name: elasticsearch
-        image: docker.elastic.co/elasticsearch/elasticsearch:7.17.10 # 안정적인 7버전 사용
+        #image: docker.elastic.co/elasticsearch/elasticsearch:7.17.10 # 안정적인 7버전 사용
+        image: leeroute/es-nori:1.0
         resources:
           limits:
             memory: 1Gi  # 리소스 제한 (노트북/PC 환경 고려)
